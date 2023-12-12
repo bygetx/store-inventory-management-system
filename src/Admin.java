@@ -39,4 +39,11 @@ public class Admin extends User {
                 }
         }
     }
+    public void add_product(String name, double price, String category, String description){
+        new Product(name,price,category,description);
+    }
+    public void add_supplies(int productId , int quantity){
+        InventoryManager.updateProductQuantityById(productId,quantity,true);
+    }
+    
 }

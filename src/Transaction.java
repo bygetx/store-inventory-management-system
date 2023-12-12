@@ -1,5 +1,4 @@
 package src;
-
 import java.time.LocalDateTime;
 
 public class Transaction {
@@ -12,13 +11,12 @@ public class Transaction {
     private double price;
 
     public Transaction(int userId, int productId, int quantity) {
-        this.currentDate = java.time.LocalDateTime.now();
+        this.currentDate = LocalDateTime.now();
         this.userId = userId;
         this.productId = productId;
         this.quantity = quantity;
         this.price = Utils.getPriceByProductId(productId);
         this.totalPrice = this.price * this.quantity;
-        Utils.saveData_Transactions(this.currentDate,this.totalPrice,this.quantity,this.productId,this.userId,this.price);
+        Utils.saveData_Transactions(this.currentDate, this.totalPrice, this.quantity, this.productId, this.userId, this.price);
     }
-
 }

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.Random;
 
 public abstract class Utils {
     static String ACCOUNTS_FILE_PATH = "src/accounts.csv";
-    static String DATABASE_FILE_PATH = "jdbc:sqlite:C:/Users/mehre/OneDrive/Bureau/VSC/java project/database.db";
+    static String DATABASE_FILE_PATH = "jdbc:sqlite:C:/Users/PC-Lenovo/Desktop/Java Project/store-inventory-management-system/database.db";
 
     public static String hashPassword(String password) {
         try {
@@ -571,6 +572,38 @@ public abstract class Utils {
         }
         return null;
     }
+
+    public static Object[][] readTransactionTable() {
+        Object[][] Transactions = null;
+        String sql = "SELECT * FROM Transactions";
+        try (Connection conn = DriverManager.getConnection(DATABASE_FILE_PATH);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery()) {
+            
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            ArrayList<Object[]> rows = new ArrayList<>();
+            
+            while (rs.next()) {
+                Object[] row = new Object[columnCount];
+                for (int i = 0; i < columnCount; i++) {
+                    row[i] = rs.getObject(i + 1);
+                }
+                rows.add(row);
+            }
+            
+            Transactions = new Object[rows.size()][columnCount];
+            for (int i = 0; i < rows.size(); i++) {
+                Transactions[i] = rows.get(i);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return Transactions;
+    }
+
 
     
 }
